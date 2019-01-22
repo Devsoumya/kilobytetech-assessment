@@ -17,9 +17,8 @@ class CreateCataloguesTable extends Migration
             $table->increments('id');
             $table->string('name');
             $table->unsignedInteger('category_id');
-            $table->unsignedInteger('address_id');
+            $table->string('address');
             $table->foreign('category_id')->references('id')->on('categories');
-            $table->foreign('address_id')->references('id')->on('addresses');
             $table->timestamps();
         });
     }
