@@ -30,5 +30,12 @@ $router->group(
          * JWT Auth Protected Routes here
          */
 
+        $router->post(
+            'placeorder',[
+                'middleware' => 'check.customer',
+                'uses' => 'OrderController@placeOrder'
+            ]
+        );
+
     }
 );

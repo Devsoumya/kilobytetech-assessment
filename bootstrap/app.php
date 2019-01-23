@@ -69,6 +69,7 @@ $app->singleton(
 
 $app->routeMiddleware([
     'jwt.auth' => App\Http\Middleware\JwtMiddleware::class,
+    'check.customer' => App\Http\Middleware\CheckCustomerMiddleware::class,
 ]);
 
 /*

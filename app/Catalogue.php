@@ -16,5 +16,12 @@ class Catalogue extends Model
         'name','category_id','address'
     ];
 
+    public static function details ($itemId) {
+        $item = Self::find($itemId);
+        $item->category = Category::find($item['category_id']);
+        $item->address = Address::details(explode(',',$item->address));
+        return $item;
+    }
+
 
 }
