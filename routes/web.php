@@ -49,6 +49,12 @@ $router->group(
                     ]
                 );
 
+                $router->post(
+                    'assignDeliveryPerson',[
+                        'uses' => 'OrderController@assignDeliveryPerson'
+                    ]
+                );
+
             }
         );
 

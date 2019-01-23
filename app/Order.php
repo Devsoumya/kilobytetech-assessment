@@ -28,8 +28,8 @@ class Order extends Model
                 $order->deliveryPerson = User::find($order->delivery_person_id);
             }
             if($order->status == 0) {
-                $busyDeliveryPersons = Self::whereIn('status',array(1,2,3,4,5))->get()->pluck('id')->toArray();
-                $freeDelieveryPersons = User::whereNotIn('id',$busyDeliveryPersons)->select('id','name','mobile')->get();
+                $busyDeliveryPersons = Self::whereIn('status',array(1,2,3,4))->get()->pluck('id')->toArray();
+                $freeDelieveryPersons = User::whereNotIn('id',$busyDeliveryPersons)->where('category',2)->select('id','name','mobile')->get();
                 $order->freeDeliverPerson = $freeDelieveryPersons;
             }
             $order->customer = User::find($order->customer_id);

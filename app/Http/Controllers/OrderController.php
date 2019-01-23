@@ -77,4 +77,49 @@ class OrderController extends BaseController
         return $orders;
     }
 
+    public function assignDeliveryPerson() {
+        $this->validate($this->request, [
+            'order_id'               => 'required',
+            'delivery_person_id'     => 'required'
+        ]);
+
+        $order = Order::find($this->request->get('order_id'));
+
+        if(empty($order) || $order->status !=0) {
+            return response()->json([
+                'error' => "No such pending order exists"
+            ], 400);
+        }
+
+        $deliveryPersonDetails = User::where('category',2)->find($this->request->get('delivery_person_id'));
+        $validDeliveryPerson = true;
+
+        if(empty($deliveryPersonDetails)) {
+            $validDeliveryPerson = false;
+        }
+        $checkIfDeliveryPersonBusy = Order::whereBetween('status',[1,4])->where('delivery_person_id',$this->request->get('delivery_person_id'))->first();
+
+        if(!empty($checkIfDeliveryPersonBusy)) {
+            $validDeliveryPerson = false;
+        }
+
+        if(!$validDeliveryPerson) {
+            return response()->json([
+                'error' => "No such free delivery person exists"
+            ], 400);
+        }
+
+        $order->status = 1;
+        $order->delivery_person_id = $this->request->get('delivery_person_id');
+
+        if($order->save()) {
+            return response()->json([
+                'message' => "Delivery Person Assigned Successfully"
+            ], 200);
+        }
+
+
+
+    }
+
 }
