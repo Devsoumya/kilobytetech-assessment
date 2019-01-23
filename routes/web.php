@@ -37,5 +37,21 @@ $router->group(
             ]
         );
 
+        $router->group(
+            ['middleware' => 'check.admin'],
+            function() use ($router) {
+                /*
+                 * JWT Auth Protected Routes here
+                 */
+                $router->get(
+                    'orderlist',[
+                        'uses' => 'OrderController@orderList'
+                    ]
+                );
+
+            }
+        );
+
+
     }
 );

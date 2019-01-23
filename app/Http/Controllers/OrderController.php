@@ -71,4 +71,10 @@ class OrderController extends BaseController
 
     }
 
+    public function orderList() {
+        $status = $this->request->get('status');
+        $orders = Order::details(Order::where('status',$status)->get()->pluck('id')->toArray());
+        return $orders;
+    }
+
 }
