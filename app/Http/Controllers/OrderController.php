@@ -117,9 +117,29 @@ class OrderController extends BaseController
                 'message' => "Delivery Person Assigned Successfully"
             ], 200);
         }
+    }
 
-
-
+    public function changeOrderStatus() {
+        $this->validate($this->request, [
+            'order_id'               => 'required',
+            'status'                 => 'required|integer|between:2,6'
+        ]);
+        $order = Order::where('id',$this->request->post('order_id'))->where('delivery_person_id',$this->request->auth->id)->whereBetween('status',[1,4])->first();
+        if(empty($order)) {
+            return response()->json([
+                'error' => "Invalid Order"
+            ], 400);
+        }
+        $order->status = $this->request->post('status');
+        if($order->save()) {
+            return response()->json([
+                'message' => "Order Status updated succesfully",
+                "data" => array(
+                    'order_id'=>$order->id,
+                    'status'=>Order::$status[$order->status],
+                )
+            ], 200);
+        }
     }
 
 }

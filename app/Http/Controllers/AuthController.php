@@ -76,4 +76,28 @@ class AuthController extends BaseController
             'error' => 'Mobile or password is wrong.'
         ], 400);
     }
+
+    public function signup() {
+        $this->validate($this->request, [
+            'mobile'     => 'required|unique:users,mobile|regex:/^[789]\d{9}$/i',
+            'password'  => 'required',
+            'category' => 'required|integer|between:1,2',
+            'name' => 'required|regex:/[a-zA-Z][a-zA-Z ]*/i'
+        ]);
+        $user = new User();
+        $user->mobile = $this->request->post('mobile');
+        $user->name = $this->request->post('name');
+        $user->category = $this->request->post('category');
+        $user->password = Hash::make($this->request->post('password'));
+
+        if($user->save()) {
+            return response()->json([
+                'message' => 'User Registered Successfully.'
+            ], 200);
+        } else {
+            return response()->json([
+                'error' => 'Error in Regestring User'
+            ], 400);
+        }
+    }
 }

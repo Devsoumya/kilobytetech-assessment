@@ -71,6 +71,7 @@ $app->routeMiddleware([
     'jwt.auth' => App\Http\Middleware\JwtMiddleware::class,
     'check.customer' => App\Http\Middleware\CheckCustomerMiddleware::class,
     'check.admin' => App\Http\Middleware\CheckAdminMiddleware::class,
+    'check.deliveryperson' => App\Http\Middleware\CheckDeliveryPersonMiddleware::class,
 ]);
 
 /*

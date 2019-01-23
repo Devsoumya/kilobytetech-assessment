@@ -19,7 +19,16 @@ class Order extends Model
      *
      *
      */
+    public static $status = array(
+        '0' =>'Order Placed but delivery person not assigned',
+        '1' =>'Delivery person assigned by admin',
+        '2' =>'Reached store',
+        '3' =>'Item picked',
+        '4' =>'Enroute',
+        '5' =>'Delivered',
+        '6' =>'Cancelled',
 
+    );
 
     public static function details($orderIds) {
         $orders = Self::whereIn('id',$orderIds)->get();
@@ -34,6 +43,7 @@ class Order extends Model
             }
             $order->customer = User::find($order->customer_id);
             $order->details = json_decode($order->details);
+            $order->orderStatus = Self::$status[$order->status];
             unset($order->customer_id);
             unset($order->delivery_person_id);
             $orders[$key] = $order;

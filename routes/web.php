@@ -11,9 +11,16 @@
 |
 */
 
-$router->get('/', function () use ($router) {
+$router->post('signup',
+    [
+        'uses' => 'AuthController@signup'
+    ]
+);
+
+$router->get('signup', function () use ($router) {
     return $router->app->version();
 });
+
 
 $router->post(
     'auth/login',
@@ -30,6 +37,8 @@ $router->group(
          * JWT Auth Protected Routes here
          */
 
+
+        //customer routes
         $router->post(
             'placeorder',[
                 'middleware' => 'check.customer',
@@ -37,6 +46,8 @@ $router->group(
             ]
         );
 
+
+        //admin routes
         $router->group(
             ['middleware' => 'check.admin'],
             function() use ($router) {
@@ -56,6 +67,14 @@ $router->group(
                 );
 
             }
+        );
+
+        //change order status
+        $router->post(
+            'changeorderstatus',[
+                'middleware' => 'check.deliveryperson',
+                'uses' => 'OrderController@changeOrderStatus'
+            ]
         );
 
 
